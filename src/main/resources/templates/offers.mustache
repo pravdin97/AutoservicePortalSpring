@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <title>Предложения</title>
+
+    <link href="/static/css/mainstyle.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <a class="navbar-brand" href="/">
+        <img src="/static/img/auto.png" width="70" height="50" class="d-inline-block align-top" alt="">
+        Портал автомастерских
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Частным клиентам</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="offers">Автомастерским</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+<section class="container justify-content-start">
+    <div class="list-group">
+
+        {{#offers}}
+        <div class="list-group-item d-flex">
+            <span class="mr-auto p-2">{{ service.name }}, от {{ cost }} р.</span>
+
+            <button type="button" class="btn">Посмотреть</button>
+
+            <form action="/edit" method="POST">
+                <button type="submit" class="btn" name="edit" value="{{ id }}">Редактировать</button>
+            </form>
+            <form action="/offers" method="POST">
+                <button type="submit" class="btn" name="delete" value="{{ id }}">Удалить</button>
+            </form>
+        </div>
+        {{/offers}}
+
+    </div>
+
+</section>
+
+<section class="container">
+    <a href="edit"> <button type="button" class="btn btn-secondary p-2 mt-2">Добавить предложение</button></a>
+
+</section>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+</body>
+</html>
