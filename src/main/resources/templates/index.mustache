@@ -28,10 +28,6 @@
                 <a class="nav-link" href="offers">Автомастерским</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
     </div>
 </nav>
 
@@ -46,6 +42,7 @@
                     <h5 class="card-title">{{ service.name }}</h5>
                     <p class="card-text">{{ autoservice.name }}, от {{ cost }} р.</p>
                     <form action="oneitem" method="POST">
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                         <button type="submit" class="btn btn-primary" name="view" value="{{ id }}">Подробнее</button>
                     </form>
                 </div>

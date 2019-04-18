@@ -3,15 +3,18 @@ package com.example.AutoservicePortal.Controller;
 import com.example.AutoservicePortal.Repository.AutoserviceRepo;
 import com.example.AutoservicePortal.Repository.OfferRepo;
 import com.example.AutoservicePortal.Repository.ServiceRepo;
-import com.example.AutoservicePortal.domain.Autoservice;
-import com.example.AutoservicePortal.domain.Offer;
-import com.example.AutoservicePortal.domain.Service;
+import com.example.AutoservicePortal.Repository.UserRepo;
+import com.example.AutoservicePortal.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,11 +31,20 @@ public class MainController {
     @Autowired
     private OfferRepo offerRepo;
 
+    @Autowired
+    private UserRepo userRepo;
+
     @GetMapping("/")
     public String index(Map<String, Object> model) {
 
         Iterable<Offer> offers = offerRepo.findAll();
         model.put("offers", offers);
+
+//        Optional<Autoservice> a1 = autoserviceRepo.findById(1);
+//        User user = new User("auto4", "4", a1.get());
+//        user.setActive(true);
+//        user.setRoles(Collections.singleton(Role.USER));
+//        userRepo.save(user);
 
         return "index";
     }
@@ -54,8 +66,9 @@ public class MainController {
     }
 
     @GetMapping("/offers")
-    public String offers(Map<String, Object> model) {
-        Optional<Autoservice> autoservice = autoserviceRepo.findById(1);
+    public String offers(Principal principal, Map<String, Object> model) {
+        User user = userRepo.findByUsername(principal.getName());
+        Optional<Autoservice> autoservice = autoserviceRepo.findById(user.getAutoservice().getId());
         Autoservice a = autoservice.get();
 
         List<Offer> offers = offerRepo.findByAutoservice(a);
@@ -66,7 +79,8 @@ public class MainController {
     }
 
     @PostMapping("/offers")
-    public String crud(@RequestParam(name = "save", required = false, defaultValue = "false") String save,
+    public String crud(Principal principal,
+                       @RequestParam(name = "save", required = false, defaultValue = "false") String save,
                        @RequestParam(name = "create", required = false, defaultValue = "false") String create,
                        @RequestParam(name = "delete", required = false) Integer delete,
                        @RequestParam(required = false) Integer id,
@@ -101,7 +115,7 @@ public class MainController {
             offerRepo.deleteById(delete);
         }
 
-        offers(model);
+        offers(principal, model);
 
         return "offers";
     }
@@ -132,9 +146,9 @@ public class MainController {
     }
 
     @GetMapping("/edit")
-    public String create(Map<String, Object> model) {
-
-        model.put("autoservice", 1);
+    public String create(Principal principal, Map<String, Object> model) {
+        User user = userRepo.findByUsername(principal.getName());
+        model.put("autoservice", user.getAutoservice().getId());
 
         Iterable<Service> services = serviceRepo.findAll();
         model.put("services", services);
