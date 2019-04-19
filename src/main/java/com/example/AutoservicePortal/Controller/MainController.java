@@ -1,9 +1,6 @@
 package com.example.AutoservicePortal.Controller;
 
-import com.example.AutoservicePortal.Repository.AutoserviceRepo;
-import com.example.AutoservicePortal.Repository.OfferRepo;
-import com.example.AutoservicePortal.Repository.ServiceRepo;
-import com.example.AutoservicePortal.Repository.UserRepo;
+import com.example.AutoservicePortal.Repository.*;
 import com.example.AutoservicePortal.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -34,18 +31,22 @@ public class MainController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private RequestRepo requestRepo;
+
     @GetMapping("/")
     public String index(Map<String, Object> model) {
 
         Iterable<Offer> offers = offerRepo.findAll();
         model.put("offers", offers);
 
-//        Optional<Autoservice> a1 = autoserviceRepo.findById(1);
-//        User user = new User("auto4", "4", a1.get());
-//        user.setActive(true);
-//        user.setRoles(Collections.singleton(Role.USER));
-//        userRepo.save(user);
+        return "index";
+    }
 
+    @PostMapping("/")
+    public String validSignUp(Map<String, Object> model) {
+
+        index(model);
         return "index";
     }
 
@@ -162,5 +163,15 @@ public class MainController {
 
         return "edit";
     }
+    @PostMapping("/signup")
+    public String signup(@RequestParam String service,
+            Map<String, Object> model) {
+        model.put("service", service);
+        return "signup";
+    }
 
+    @PostMapping("/validsignup")
+    public void acceptSignUp(Map<String, Object> model) {
+        index(model);
+    }
 }

@@ -40,9 +40,12 @@
         <p class="lead">от {{ cost }} р.</p>
 
 
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Записаться на услугу</a>
-        </p>
+        <!--<p class="lead">-->
+        <form action="/signup" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button class="btn btn-primary btn-lg" name="service" value="{{ service }}">Записаться на услугу</button>
+        </form>
+        <!--</p>-->
     </div>
 </div>
 

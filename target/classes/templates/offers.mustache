@@ -29,9 +29,9 @@
                 <a class="nav-link" href="offers">Автомастерским</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Sign Out">Выход</button>
         </form>
     </div>
 </nav>
@@ -46,9 +46,11 @@
             <button type="button" class="btn">Посмотреть</button>
 
             <form action="/edit" method="POST">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                 <button type="submit" class="btn" name="edit" value="{{ id }}">Редактировать</button>
             </form>
             <form action="/offers" method="POST">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                 <button type="submit" class="btn" name="delete" value="{{ id }}">Удалить</button>
             </form>
         </div>
